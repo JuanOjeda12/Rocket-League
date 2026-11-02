@@ -1,6 +1,6 @@
 import {cleanInventory,inventoryProfile} from './inventory.js?v=inventory-20261028';
 import {ACCOUNT_CONFIG} from './account-config.js?v=inventory-20261028';
-import {cleanProgress,emptyProgress} from './progression.js?v=bot-tiers-20261031';
+import {cleanProgress,emptyProgress} from './progression.js?v=coherent-bots-20261101';
 import {cleanProfile} from './catalog.js?v=inventory-20261028';
 const read=key=>{try{return JSON.parse(localStorage.getItem(key)||'null')}catch{return null}};
 const write=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value))}catch{}};

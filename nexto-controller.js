@@ -1,4 +1,4 @@
-import {nextoDecisionTicks} from './bot-difficulty.js?v=bot-tiers-20261031';
+import {nextoDecisionTicks,neuralRankSkill} from './bot-difficulty.js?v=coherent-bots-20261101';
 // Nexto observation/action port, adapted from Rolv-Arild/Necto, CC BY-NC-SA 4.0.
 // Network observations retain the original RL units, team inversion and heading rotation.
 export function nextoObservation(state,slot,previousAction=new Array(8).fill(0)){
@@ -33,10 +33,10 @@ export class NextoController{
  constructor(model,skill=1){this.model=model;this.skill=Math.max(0,Math.min(1,skill));this.reset()}
  reset(){this.ticks=26;this.previousAction=new Array(8).fill(0);this.controls={};this.intent='Nexto';this.kickoffElapsed=0;this.kickoffTaker=null}
  update(state,slot){
-  if(this.ticks++<nextoDecisionTicks(this.skill))return this.controls;this.ticks=1;
+  const policySkill=neuralRankSkill(this.skill);if(this.ticks++<nextoDecisionTicks(policySkill))return this.controls;this.ticks=1;
   const own=state.cars.find(c=>c.slot===slot);if(own.isDemoed)return this.controls={};
   const obs=nextoObservation(state,slot,this.previousAction);let index=this.model.infer(obs.query,obs.entities,obs.count);
-  if(this.skill<.999999){const {weights,beta}=nextoPolicy(this.model.logits(),this.skill);let sample=Math.random();for(let i=0;i<weights.length;i++){sample-=weights[i];if(sample<=0){index=i;break}}this.beta=beta}
+  if(policySkill<.999999){const {weights,beta}=nextoPolicy(this.model.logits(),policySkill);let sample=Math.random();for(let i=0;i<weights.length;i++){sample-=weights[i];if(sample<=0){index=i;break}}this.beta=beta}
   this.previousAction=[...this.model.actions[index]];this.controls=control(this.previousAction);return this.controls;
  }
 }

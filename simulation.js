@@ -1,8 +1,9 @@
-import {BasicBot} from './basic-bot.js?v=bot-tiers-20261031';
-import {nextoAssistance,blendRankedControls} from './bot-difficulty.js?v=bot-tiers-20261031';
+import {rankedScriptedProfile} from './bot-profile.js?v=coherent-bots-20261101';
+import {BasicBot} from './basic-bot.js?v=coherent-bots-20261101';
+import {rankedDriver} from './bot-difficulty.js?v=coherent-bots-20261101';
 import {advanceCelebration,PODIUM_SECONDS} from './celebration.js?v=inventory-20261028';
 import {createMatchEngine} from './engine/adapter.js?v=stadium-finale-20261027';
-import {OpponentAI} from './opponent-ai.js?v=inventory-20261028';
+import {OpponentAI} from './opponent-ai.js?v=coherent-bots-20261101';
 import {MatchFlow} from './match-flow.js?v=inventory-20261028';
 import {carById,cleanProfile} from './catalog.js?v=inventory-20261028';
 import {MatchEvents} from './match-events.js?v=inventory-20261028';
@@ -10,7 +11,7 @@ import {MatchStats} from './match-stats.js?v=inventory-20261028';
 import {incomingShot} from './ball-prediction.js?v=inventory-20261028';
 import {BALL_RADIUS} from './proportions.js?v=inventory-20261028';
 import {loadNexto} from './nexto-model.js?v=inventory-20261028';
-import {NextoController} from './nexto-controller.js?v=inventory-20261028';
+import {NextoController} from './nexto-controller.js?v=coherent-bots-20261101';
 const distance=(a,b)=>Math.hypot(a[0]-b[0],a[2]-b[2]);
 const newMatchId=()=>globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)+'-'+Math.random().toString(36).slice(2);
 const rotate=(v,sign)=>[v[0]*sign,v[1],v[2]*sign];
@@ -23,7 +24,7 @@ export class Simulation{
  configure(options={}){
   this.options={blue:1,orange:1,difficulty:'casual',training:false,...options};
   this.options.blue=Math.max(1,Math.min(5,Number(this.options.blue)||1));this.options.orange=this.options.training?0:Math.max(1,Math.min(5,Number(this.options.orange)||1));
-  this.live=this.engine.configure(this.options.blue,this.options.orange);this.profiles=this.live.cars.map(c=>({name:`${this.options.difficulty==='competitive'&&this.options.useNexto!==false&&nextoAssistance(this.options.botSkills?.[c.slot]??this.options.skill??.65)===1?'NEXTO':'BOT'} ${c.slot+1}`,body:'octane',color:c.team?'#ff8b32':'#248bff',human:false}));
+  this.live=this.engine.configure(this.options.blue,this.options.orange);this.profiles=this.live.cars.map(c=>({name:`${this.options.difficulty==='competitive'&&this.options.useNexto!==false&&rankedDriver(this.options.botSkills?.[c.slot]??this.options.skill??.65)==='nexto'?'NEXTO':'BOT'} ${c.slot+1}`,body:'octane',color:c.team?'#ff8b32':'#248bff',human:false}));
   this.bots=this.live.cars.map(c=>new OpponentAI({difficulty:this.options.difficulty,skill:this.options.botSkills?.[c.slot]??this.options.skill}));this.neuralBots=this.live.cars.map(c=>new NextoController(this.neural,this.options.botSkills?.[c.slot]??this.options.skill??.65));this.basicBots=this.live.cars.map(c=>new BasicBot(this.options.botSkills?.[c.slot]??this.options.skill??.65));this.roles=[null,null];this.roleClock=0;this.events=new MatchEvents();this.stats=new MatchStats(this.live.cars.length);this.matchId=newMatchId();this.played=0;this.postmatch={time:0,poses:{}};this.flow=new MatchFlow(()=>this.nextRound());this.remaining=300;this.overtime=false;this.endAfterReplay=false;this.started=false;this.resetRound();
  }
  assign(slot,profile,human=true){if(!this.profiles[slot])throw Error('Puesto inválido');this.profiles[slot]={...cleanProfile(profile),human};this.engine.setBody(slot,carById(profile.body).kind);this.live=this.engine.state();this.refreshBotSkills()}
@@ -36,10 +37,11 @@ export class Simulation{
  start(){this.started=true;this.resetRound()}
  restart(){this.postmatch={time:0,poses:{}};this.remaining=300;this.played=0;this.matchId=newMatchId();this.stats=new MatchStats(this.live.cars.length);this.overtime=false;this.endAfterReplay=false;this.flow.score=[0,0];this.start()}
  botInput(slot,dt){
-  const ranked=this.options.difficulty==='competitive'&&this.options.useNexto!==false,weight=ranked?nextoAssistance(this.neuralBots[slot].skill):0;
-  if(ranked&&weight===1){this.bots[slot].intent='Nexto';return this.neuralBots[slot].update(this.live,slot)}
-  const neural=ranked&&weight>0?this.neuralBots[slot].update(this.live,slot):{},ai=ranked?this.basicBots[slot]:this.bots[slot];
-  if(ai.time+dt<ai.nextThink){ai.time+=dt;return ranked?blendRankedControls(ai.controls,neural,weight):ai.controls}
+  const ranked=this.options.difficulty==='competitive'&&this.options.useNexto!==false,skill=this.neuralBots[slot].skill,driver=ranked?rankedDriver(this.options.botSkills?.[slot]??this.options.skill??skill):'fallback';
+  if(driver==='nexto'){this.bots[slot].intent='Nexto';return this.neuralBots[slot].update(this.live,slot)}
+  const ai=driver==='basic'?this.basicBots[slot]:this.bots[slot];
+  if(driver==='scripted'){ai.difficulty='casual';ai.tuning=rankedScriptedProfile(skill)}
+  if(ai.time+dt<ai.nextThink){ai.time+=dt;return ai.controls}
   const self=this.live.cars[slot],sign=self.team?1:-1,convert=c=>({...c,position:rotate(c.position,sign),velocity:rotate(c.velocity,sign),forward:axis(c.forward,sign),right:axis(c.right,sign),up:axis(c.up,sign)});
   const team=this.live.cars.filter(c=>c.team===self.team&&!c.isDemoed).sort((a,b)=>distance(a.position,this.live.ball.position)-distance(b.position,this.live.ball.position));
   const chaser=this.roles[self.team]??team[0]?.slot,others=team.filter(c=>c.slot!==chaser).sort((a,b)=>a.position[2]*sign-b.position[2]*sign),rank=slot===chaser?0:others.findIndex(c=>c.slot===slot)+1;
@@ -52,7 +54,7 @@ export class Simulation{
   }
   // The goal-side defender may leave the line to cut a shot, never to chase a harmless ball.
   if(threat&&rank===1&&state.opponent.position[2]<ball.position[2]+1&&distance(state.opponent.position,ball.position)<21)state.targetOverride=null;
-  const controls=ai.update(state,dt);if(ranked){this.bots[slot].intent=weight?'Conducción asistida':'Conducción básica';return blendRankedControls(controls,neural,weight)}return controls;
+  return ai.update(state,dt);
  }
  tick(dt,inputs={}){
   if(!this.started)return;

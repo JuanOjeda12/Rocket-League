@@ -1,5 +1,5 @@
 import {parentPort,workerData} from 'node:worker_threads';
-import {Simulation} from '../simulation.js?v=bot-tiers-20261031';
+import {Simulation} from '../simulation.js?v=coherent-bots-20261101';
 const simulation=await Simulation.create(workerData.options),inputs=new Map();
 simulation.assign(workerData.ownerSlot,workerData.profile,true);
 parentPort.on('message',m=>{

@@ -1,5 +1,5 @@
 import {predictBall,incomingShot} from './ball-prediction.js?v=inventory-20261028';
-import {botProfile} from './bot-profile.js?v=inventory-20261028';
+import {botProfile} from './bot-profile.js?v=coherent-bots-20261101';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const distance=(a,b)=>Math.hypot(a[0]-b[0],a[2]-b[2]);
 const angleTo=(f,dx,dz)=>Math.atan2(f.x*dz-f.z*dx,f.x*dx+f.z*dz);

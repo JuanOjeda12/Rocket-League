@@ -4,7 +4,7 @@ import {addRoundedArena} from './arena-view.js?v=inventory-20261028';
 import {turfMaterials} from './surface-materials.js?v=inventory-20261028';
 import {createBallVisual} from './ball-view.js?v=inventory-20261028';
 import {RoomEnvironment} from './vendor/RoomEnvironment.js';
-import {startApp} from './app.js?v=bot-tiers-20261031';
+import {startApp} from './app.js?v=coherent-bots-20261101';
 import {ARENA} from './arena-shape.js?v=inventory-20261028';
 import {createStadium} from './stadium.js?v=inventory-20261028';
 const $=id=>document.getElementById(id), canvas=$('game');
