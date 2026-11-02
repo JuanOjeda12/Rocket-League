@@ -1,4 +1,4 @@
-import {nextoDecisionTicks,neuralRankSkill} from './bot-difficulty.js?v=coherent-bots-20261101';
+import {nextoDecisionTicks,neuralRankSkill} from './bot-difficulty.js?v=gold-nexto-20261101';
 // Nexto observation/action port, adapted from Rolv-Arild/Necto, CC BY-NC-SA 4.0.
 // Network observations retain the original RL units, team inversion and heading rotation.
 export function nextoObservation(state,slot,previousAction=new Array(8).fill(0)){

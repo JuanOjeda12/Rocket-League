@@ -1,6 +1,6 @@
 import {equipItem,visitInventory,claimMission,claimPass,openDrop,collectDrop,recordInventoryMatch} from './inventory.js?v=inventory-20261028';
-import {AccountStore} from './accounts.js?v=coherent-bots-20261101';
-import {botSkill,cleanProgress,completeResult,levelInfo,PLAYLISTS,rankBadge,rankInfo} from './progression.js?v=coherent-bots-20261101';
+import {AccountStore} from './accounts.js?v=gold-nexto-20261101';
+import {botSkill,cleanProgress,completeResult,levelInfo,PLAYLISTS,rankBadge,rankInfo} from './progression.js?v=gold-nexto-20261101';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export class PlayerHub{
  constructor(apply){

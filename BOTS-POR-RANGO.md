@@ -12,3 +12,7 @@ Los compañeros siguen algo por debajo de los rivales, conservando el mismo tipo
 Comprobación realizada con la física real: Bronce, Plata, Oro, Platino, Diamante y Supersónico alcanzan y golpean un balón situado a 9 metros. En ese escenario sin portero, Plata y superiores también marcaron. Esto verifica que conducen y actúan; no mide por sí solo su nivel en una partida humana.
 
 La carpeta JUEGO-COMPLETO-ACTUALIZADO-PARA-GITHUB contiene el juego completo actualizado. Sube su contenido a la raíz del repositorio, confirma el reemplazo de archivos y espera a que Pages y Render desplieguen el commit. Después recarga con Ctrl+F5. Reinicia cualquier servidor LAN que estuviera abierto.
+
+
+## Prueba de Oro con Nexto
+Desde Oro se usa Nexto, con decisiones menos deterministas y reaccion mas lenta que Platino. Bronce y Plata conservan sus controladores anteriores. Supersonico mantiene el maximo. La calibracion es experimental.

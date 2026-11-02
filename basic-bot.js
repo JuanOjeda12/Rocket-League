@@ -1,5 +1,5 @@
 // Deliberately simple scripted driver: low tiers do not use a trained model.
-import {botRankFromSkill} from './bot-difficulty.js?v=coherent-bots-20261101';
+import {botRankFromSkill} from './bot-difficulty.js?v=gold-nexto-20261101';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export class BasicBot{
  constructor(skill=.06){this.skill=skill;this.reset()}
