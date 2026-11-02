@@ -74,3 +74,6 @@ Model and observation architecture: Rolv-Arild/Necto, https://github.com/Rolv-Ar
 Changes: converted unchanged float32 tensor data from the official TorchScript artifact; implemented its two-block EARL attention architecture as local WebAssembly SIMD inference; ported the observation builder and action table to JavaScript; connected original physical states and controls to RocketSim. The adapted model-specific files nexto-controller.js, nexto-model.js and engine/nexto/ are distributed under CC BY-NC-SA 4.0. The original project does not endorse this browser game.
 
 The circular flip reset cue is original geometry and audio inspired by Rocket League v2.66; no game texture or sound file was extracted.
+
+## Necto V1 trained opponent
+Official model: https://github.com/Rolv-Arild/Necto/tree/master/rlbot-support/Necto . CC BY-NC-SA 4.0, same license as Nexto (THIRD-PARTY-LICENSES/NEXTO-LICENSE.txt). Unchanged trained weights converted to float32; one-block EARL attention and five discrete action heads ported to WASM SIMD; original observation/action conventions adapted to RocketSim. necto-model.js, necto-controller.js and engine/necto/ inherit CC BY-NC-SA 4.0. No endorsement.

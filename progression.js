@@ -1,4 +1,4 @@
-import {mmrBotSkill} from './bot-difficulty.js?v=gold-nexto-20261101';
+import {mmrBotSkill} from './bot-difficulty.js?v=necto-tiers-20261101';
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 export const PLAYLISTS=['1v1','2v2','3v3'];
 export const RANKS=['Bronce','Plata','Oro','Platino','Diamante','Campeón','Gran Campeón','Leyenda Supersónica'];

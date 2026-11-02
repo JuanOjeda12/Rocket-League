@@ -1,18 +1,14 @@
-# Corrección de bots por rango
+# Bots por rango
 
-Se eliminó la mezcla de órdenes de conducción: cada coche usa un único conductor.
+- Bronce: bot basico programado.
+- Plata: bot tactico programado.
+- Oro: Necto V1 reducido (beta .25, decisiones cada 24 ticks).
+- Platino: Necto V1 reducido (beta .55, 16 ticks).
+- Diamante: Necto V1 reducido (beta .85, 10 ticks).
+- Campeon: Nexto reducido.
+- Gran Campeon: Nexto ligeramente reducido.
+- Leyenda Supersonica: Nexto maximo, argmax y 8 ticks.
 
-- Bronce: bot básico activo, con reacción y precisión limitadas. Se acerca al balón y puede golpearlo; no se limita a quedarse parado ni a avanzar casi sin acelerar.
-- Plata y Oro: bot de reglas con anticipación, recuperación, defensa y preparación de tiros. Su reacción y velocidad suben dentro de estos rangos.
-- Platino, Diamante, Campeón y Gran Campeón: Nexto completo controla el coche, con dificultad graduada mediante la política de acciones y reacción. Sus órdenes ya no se diluyen con las de otro controlador.
-- Leyenda Supersónica: Nexto al máximo, con la misma selección de acciones y respuesta máximas.
+Necto y Nexto son dos modelos oficiales diferentes. Los valores se interpolan dentro de cada rango. Los companeros de jugadores humanos conservan el mismo modelo de su rango y usan un nivel algo inferior. No se mezclan controles de distintos bots. Las etiquetas son una calibracion propia, no una certificacion del rango humano real.
 
-Los compañeros siguen algo por debajo de los rivales, conservando el mismo tipo de conductor del rango de la partida. La progresión es propia de Rocket Arena y no una equivalencia certificada con jugadores humanos de RL.
-
-Comprobación realizada con la física real: Bronce, Plata, Oro, Platino, Diamante y Supersónico alcanzan y golpean un balón situado a 9 metros. En ese escenario sin portero, Plata y superiores también marcaron. Esto verifica que conducen y actúan; no mide por sí solo su nivel en una partida humana.
-
-La carpeta JUEGO-COMPLETO-ACTUALIZADO-PARA-GITHUB contiene el juego completo actualizado. Sube su contenido a la raíz del repositorio, confirma el reemplazo de archivos y espera a que Pages y Render desplieguen el commit. Después recarga con Ctrl+F5. Reinicia cualquier servidor LAN que estuviera abierto.
-
-
-## Prueba de Oro con Nexto
-Desde Oro se usa Nexto, con decisiones menos deterministas y reaccion mas lenta que Platino. Bronce y Plata conservan sus controladores anteriores. Supersonico mantiene el maximo. La calibracion es experimental.
+Subir todos los archivos del parche conservando engine/necto/ y server/. Esperar Pages y Render y recargar con Ctrl+F5. No requiere cambios SQL.
